@@ -1,0 +1,262 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: order
+  description: 订单 API
+servers:
+  - url: 'http://localhost:8080/api/order'
+paths:
+  /order:
+    get:
+      summary: '获取订单列表'
+      operationId: get-order-userId
+      tags:
+        - order
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageNumber
+          in: query
+          description: 查询的页码
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/order'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order/count:
+    get:
+      summary: '获取订单总数'
+      operationId: get-order-count-userId
+      tags:
+        - order
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order/receivestatus:
+    put:
+      summary: '修改用户的收货状态'
+      operationId: put-receivestatus-userId-orderId
+      tags:
+        - order
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: orderId
+          in: query
+          description: 更改的订单的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commodityId
+          in: query
+          description: 更改的商品的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+      responses:
+        '200':
+          description: 'OK'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    badRequest:
+      title: Bad Request
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    notFound:
+      title: Not Found
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    delivery:
+      type: object
+      required:
+        - deliveryId
+        - name
+        - phone
+        - address
+      properties:
+        deliveryId:
+          type: integer
+          format: int32
+        name:
+          type: string
+        phone:
+          type: string
+        address:
+          type: string
+    commodity:
+      type: object
+      required:
+        - commodityId
+        - commodityName
+        - commodityPrice
+        - commodityColor
+        - commodityImage
+        - commoditySpecefication
+      properties:
+        commodityId:
+          type: integer
+          format: int32
+        commodityName:
+          type: string
+        commodityPrice:
+          type: integer
+          format: int32
+        commodityColor:
+          type: string
+        commodityImage:
+          type: string
+        commoditySpecefication:
+          type: string
+    order:
+      type: object
+      required:
+        - orderId
+        - commodity
+        - timeStamp
+        - sendStatus
+        - delivery
+      properties:
+        orderId:
+          type: integer
+          format: int32
+        commodity:
+          type: array
+          items:
+            type: object
+            properties:
+              receiveStatus:
+                type: boolean
+              commentStatus:
+                type: boolean
+              commodityInfo:
+                $ref: '#/components/schemas/commodity'     
+        timeStamp:
+          type: string
+          format: date-time
+        sendStatus:
+          type: boolean
+        delivery:
+          $ref: '#/components/schemas/delivery' 
+
+              
+              
+
+      

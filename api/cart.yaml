@@ -1,0 +1,244 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: cart
+  description: 购物车 API
+servers:
+  - url: 'http://localhost:8080/api/cart'
+paths:
+  /commodity:
+    get:
+      summary: '获取用户购物车'
+      operationId: get-cart-userid
+      tags:
+        - cart
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageNumber
+          in: query
+          description: 查询的页码
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/commodity'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+    post:
+      summary: '添加商品到购物车'
+      operationId: post-commodity-cart-userId
+      tags:
+        - cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                commodityId:
+                  type: integer
+                  format: int32
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commodity' 
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+    delete:
+      summary: '删除购物车中的一个商品'
+      operationId: delete-cart-commodityId
+      tags:
+        - cart
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commodityId
+          in: query
+          description: 要删除的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+  /commodity/count:
+    get:
+      summary: '获取用户购物车商品总数'
+      operationId: get-cart-count-userid
+      tags:
+        - cart
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'   
+components:
+  schemas:
+    badRequest:
+      title: Bad Request
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    notFound:
+      title: Not Found
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    commodity:
+      type: object
+      required:
+        - commodityId
+        - commodityName
+        - commodityPrice
+        - commodityColor
+        - commodityImage
+        - commoditySpecefication
+        - commodityInvertory
+        - commodityType
+      properties:
+        commodityId:
+          type: integer
+          format: int32
+        commodityName:
+          type: string
+        commodityPrice:
+          type: integer
+          format: int32
+        commodityColor:
+          type: string
+        commodityImage:
+          type: string
+        commoditySpecefication:
+          type: string
+        commodityInvertory:
+          type: integer
+          format: int32
+        commodityType:
+          type: integer
+          format: int32

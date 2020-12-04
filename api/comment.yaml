@@ -1,0 +1,209 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: comment
+  description: 评论 API
+servers:
+  - url: 'http://localhost:8080/api/comment'
+paths:
+  /comment:
+    get:
+      summary: '获取某个商品的评论列表'
+      operationId: get-comment-commodityId
+      tags:
+        - comment
+      parameters:
+        - name: commodityId
+          in: query
+          description: 查询的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: pageNumber
+          in: query
+          description: 查询的页码
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/comment'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: '添加商品评论'
+      operationId: post-comment-userId-commodity
+      tags:
+        - comment
+      parameters:
+        - name: commodityId
+          in: query
+          description: 评论的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/commentInfo'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment' 
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'              
+  /comment/count:
+    get:
+      summary: '获取某个商品的评论总数'
+      operationId: get-comment-count
+      tags:
+        - comment
+      parameters:
+        - name: commodityId
+          in: query
+          description: 查询的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    badRequest:
+      title: Bad Request
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    notFound:
+      title: Not Found
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    comment:
+      type: object
+      required:
+        - commentId
+        - userIcon
+        - userNickname
+        - time
+        - commentInfo
+      properties:
+        commentId:
+          type: integer
+          format: int32
+        userIcon:
+          type: string
+        userNickname:
+          type: string
+        time:
+          type: string
+          format: date-time
+        commentInfo:
+          $ref: '#/components/schemas/commentInfo'     
+    commentInfo:
+      type: object
+      required:
+        - userId
+        - commodityId
+        - content
+      properties:
+        userId:
+          type: integer
+          format: int32
+        commodityId:
+          type: integer
+          format: int32
+        content:
+          type: string

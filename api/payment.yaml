@@ -1,0 +1,39 @@
+openapi: 3.0.0
+info:
+  version: 0.0.1
+  title: payment
+  description: 支付 API
+servers:
+  - url: 'http://localhost:8080/api/payment'
+paths:
+
+components:
+  schemas:
+    badRequest:
+      title: Bad Request
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    notFound:
+      title: Not Found
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
+    Error:
+      type: object
+      required:
+        - message
+      properties:
+        error:
+          type: object
+          properties:
+            message:
+              type: string
