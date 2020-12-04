@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
+  version: 1.0.0
   title: order
   description: 订单 API
 servers:
@@ -27,6 +27,12 @@ paths:
           schema:
             type: integer
             format: int32
+        - name: sendStatus
+          in: query
+          description: 查询的类型（仅当用户为管理员时需要）
+          required: false
+          schema:
+            type: boolean
       responses:
         '200':
           description: 'OK'
@@ -118,9 +124,52 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: commodityId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: boolean
+      responses:
+        '200':
+          description: 'OK'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /order/sendstatus:
+     put:
+      summary: '修改用户的发货状态'
+      operationId: put-sendstatus-userId-orderId
+      tags:
+        - order
+      parameters:
+        - name: userId
           in: query
-          description: 更改的商品的 ID
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: orderId
+          in: query
+          description: 更改的订单的 ID
           required: true
           schema:
             type: integer
@@ -154,6 +203,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    
 components:
   schemas:
     badRequest:
@@ -229,12 +279,17 @@ components:
       type: object
       required:
         - orderId
+        - userId
         - commodity
         - timeStamp
         - sendStatus
+        - receiveStatus
         - delivery
       properties:
         orderId:
+          type: integer
+          format: int32
+        userId:
           type: integer
           format: int32
         commodity:
@@ -242,8 +297,6 @@ components:
           items:
             type: object
             properties:
-              receiveStatus:
-                type: boolean
               commentStatus:
                 type: boolean
               commodityInfo:
@@ -252,6 +305,8 @@ components:
           type: string
           format: date-time
         sendStatus:
+          type: boolean
+        receiveStatus:
           type: boolean
         delivery:
           $ref: '#/components/schemas/delivery' 

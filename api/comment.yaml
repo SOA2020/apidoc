@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
+  version: 1.0.0
   title: comment
   description: 评论 API
 servers:
@@ -140,7 +140,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
+  /comment/{commentId}:
+    delete:
+      summary: '删除某一条评论'
+      operationId: delete-comment-commentId
+      tags:
+        - comment
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commentId
+          in: path
+          description: 要删除的评论 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/comment' 
+        '400':
+          description: Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     badRequest:

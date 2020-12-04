@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
+  version: 1.0.0
   title: inventory
   description: 库存 API
 servers:
@@ -54,6 +54,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    post:
+      summary: '添加商品'
+      operationId: post-commodity-commodityId
+      tags:
+        - commodity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postCommodity'
+      responses:
+        '201':
+          description: 'Created'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commodityDetail'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /commodity/count:
      get:
       summary: '获取某一类别的商品总数'
@@ -102,7 +138,7 @@ paths:
       summary: '搜索商品'
       operationId: post-commodity-search
       tags:
-        - commodity
+        - search
       parameters:
         - name: pageNumber
           in: query
@@ -150,7 +186,7 @@ paths:
       summary: '获取符合关键词的商品总数'
       operationId: post-commodity-search-count
       tags:
-        - commodity
+        - search
       requestBody:
         content:
           application/json:
@@ -228,6 +264,97 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+    delete:
+      summary: '删除一个商品'
+      operationId: delete-commodity-commodityId
+      tags:
+        - commodity
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commodityId
+          in: path
+          description: 要删除的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+    put:
+      summary: '修改商品信息'
+      operationId: put-commodity-commodityId
+      tags:
+        - commodity
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commodityId
+          in: query
+          description: 更改的商品的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/postCommodity'
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commodityDetail'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     badRequest:
@@ -262,6 +389,16 @@ components:
       type: object
       required:
         - commodityId
+        - commodityInfo
+      properties:
+        commodityId:
+          type: integer
+          format: int32
+        commodityInfo:
+          $ref: '#/components/schemas/commodityInfo'
+    commodityInfo:
+      type: object
+      required:
         - commodityName
         - commodityPrice
         - commodityColor
@@ -270,9 +407,6 @@ components:
         - commodityInvertory
         - commodityType
       properties:
-        commodityId:
-          type: integer
-          format: int32
         commodityName:
           type: string
         commodityPrice:
@@ -298,5 +432,15 @@ components:
       properties:
         commodity:
           $ref: '#/components/schemas/commodity'
+        introduction:
+          type: string
+    postCommodity:
+      type: object
+      required:
+        - commodityInfo
+        - introduction
+      properties:
+        commodityInfo:
+          $ref: '#/components/schemas/commodityInfo'
         introduction:
           type: string

@@ -1,12 +1,135 @@
 openapi: 3.0.0
 info:
-  version: 0.0.1
+  version: 1.0.0
   title: payment
   description: 支付 API
 servers:
   - url: 'http://localhost:8080/api/payment'
 paths:
-
+  /purchase:
+    post:
+      summary: '购买商品（生成订单）'
+      operationId: post-purchase-orderId
+      tags:
+        - payment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/payment'
+      responses:
+        '201':
+          description: 'Created'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+  /tokencoin:
+    get:
+      summary: '获取用户的代币数'
+      operationId: get-tokencoin-userId
+      tags:
+        - coin
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: '修改用户的代币数'
+      operationId: put-tokencoin-userId
+      tags:
+        - coin
+      parameters:
+        - name: userId
+          in: query
+          description: 需要修改的用户 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: count
+          in: query
+          description: 修改的代币数量
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error' 
 components:
   schemas:
     badRequest:
@@ -37,3 +160,29 @@ components:
           properties:
             message:
               type: string
+    payment:
+      type: object
+      required:
+        - userId
+        - deliveryId
+        - commodity
+      properties:
+        userId:
+          type: integer
+          format: int32
+        deliveryId:
+          type: integer
+          format: int32
+        commodity:
+          type: array
+          items:
+            type: object
+            properties:
+              commodityId:
+                type: integer
+                format: int32
+              count:
+                type: integer
+                format: int32
+
+              
