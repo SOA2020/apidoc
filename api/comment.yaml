@@ -4,25 +4,29 @@ info:
   title: comment
   description: 评论 API
 servers:
-  - url: 'http://localhost:8080/api/comment'
+  - url: 'http://localhost:8080/api/item'
 paths:
-  /comment:
+  /{itemId}/comments:
     get:
       summary: '获取某个商品的评论列表'
       operationId: get-comment-commodityId
       tags:
         - comment
       parameters:
-        - name: commodityId
+        - name: page
           in: query
-          description: 查询的商品 ID
-          required: true
+          description: 页面大小
           schema:
             type: integer
             format: int32
-        - name: pageNumber
+        - name: page
           in: query
-          description: 查询的页码
+          description: 页码
+          schema:
+            type: integer
+            format: int32
+        - name: itemId
+          in: path
           required: true
           schema:
             type: integer
@@ -33,9 +37,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/comment'
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+                  page:
+                    type: integer
+                    format: int32
+                  size:
+                    type: integer
+                    format: int32
+                  comments:
+                    title: array
+                    items:
+                      $ref: '#/components/schemas/comment'
         '400':
           description: 'Bad Request'
           content:
@@ -60,9 +75,8 @@ paths:
       tags:
         - comment
       parameters:
-        - name: commodityId
-          in: query
-          description: 评论的商品 ID
+        - name: itemId
+          in: path
           required: true
           schema:
             type: integer
@@ -71,7 +85,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/commentInfo'
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                content:
+                  type: string
+                
       responses:
         '201':
           description: 'Created'
@@ -97,59 +117,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'              
-  /comment/count:
-    get:
-      summary: '获取某个商品的评论总数'
-      operationId: get-comment-count
-      tags:
-        - comment
-      parameters:
-        - name: commodityId
-          in: query
-          description: 查询的商品 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    format: int32
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /comment/{commentId}:
+  /{itemId}/comments/{commentId}:
     delete:
       summary: '删除某一条评论'
       operationId: delete-comment-commentId
       tags:
         - comment
       parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
+        - name: itemId
+          in: path
           required: true
           schema:
             type: integer
@@ -164,10 +140,6 @@ paths:
       responses:
         '200':
           description: 'OK'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/comment' 
         '400':
           description: Bad Request'
           content:
@@ -219,36 +191,29 @@ components:
     comment:
       type: object
       required:
-        - commentId
-        - userIcon
-        - userNickname
-        - time
-        - commentInfo
-      properties:
-        commentId:
-          type: integer
-          format: int32
-        userIcon:
-          type: string
-        userNickname:
-          type: string
-        time:
-          type: string
-          format: date-time
-        commentInfo:
-          $ref: '#/components/schemas/commentInfo'     
-    commentInfo:
-      type: object
-      required:
+        - id
         - userId
-        - commodityId
+        - userNickname
+        - userAvatar
+        - created_at
+        - updated_at
         - content
       properties:
+        id:
+          type: integer
+          format: int32
         userId:
           type: integer
           format: int32
-        commodityId:
-          type: integer
-          format: int32
+        userAvatar:
+          type: string
+        userNickname:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
         content:
           type: string
