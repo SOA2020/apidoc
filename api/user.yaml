@@ -20,8 +20,10 @@ paths:
               properties:
                 email:
                   type: string
+                  format: email
                 password:
                   type: string
+                  format: password
       responses:
         '200':
           description: 'OK - login successfully'
@@ -85,8 +87,68 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'     
-  /user/{userId}:
+                $ref: '#/components/schemas/Error'
+  /:
+    get:
+      summary: '管理员获取所有用户信息'
+      operationId: get-user
+      tags:
+        - user
+      parameters:
+        - name: page
+          in: query
+          description: 页数
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: 页面大小
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+                  page:
+                    type: integer
+                    format: int32
+                  size:
+                    type: integer
+                    format: int32
+                  users:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/user'
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'      
+  /{userId}:
     get:
       summary: '获取当前登录用户信息'
       operationId: get-user-id
@@ -106,16 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/user'
-                  is_admin:
-                    type: boolean
-                  balance:
-                    type: integer
-                    format: int32
+                  $ref: '#/components/schemas/user'
         '400':
           description: 'Bad Request'
           content:
@@ -151,7 +204,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/user'
+              properties:
+                email:
+                  type: string
+                  format: email
+                avatar:
+                  type: string
+                nickname:
+                  type: string
       responses:
         '200':
           description: 'OK'
@@ -181,105 +241,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /user:
-    get:
-      summary: '获取所有用户信息'
-      operationId: get-user
-      tags:
-        - user
-      parameters:
-        - name: userId
-          in: path
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: pageNumber
-          in: query
-          description: 查询的页码
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    $ref: '#/components/schemas/user'
-                  is_admin:
-                    type: boolean
-                  balance:
-                    type: integer
-                    format: int32
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'   
-  /user/count:
-    get:
-      summary: '获取所有用户数量'
-      operationId: get-user-count
-      tags:
-        - user
-      parameters:
-        - name: userId
-          in: path
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    format: int32
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'   
-  /user/password/{userId}:
+  /user{userId}/password:
     put:
       summary: '修改密码'
       operationId: put-user-password-userId
@@ -299,9 +261,7 @@ paths:
             schema:
               type: object
               properties:
-                oldPassword:
-                  type: string
-                newPassword:
+                password:
                   type: string
       responses:
         '200':
@@ -324,15 +284,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /delivery:
+  /{userId}/delivery_infos:
     get:
       summary: '获取用户收货信息'
       operationId: get-user-delivery-userid
       tags:
         - delivery
       parameters:
-        - name: userId
+        - name: page
           in: query
+          description: 页数
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: size
+          in: query
+          description: 页面大小
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: userId
+          in: path
           description: 当前用户的 ID
           required: true
           schema:
@@ -344,9 +318,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/delivery'
+                properties:
+                  count:
+                    type: integer
+                    format: int32
+                  page:
+                    type: integer
+                    format: int32
+                  size:
+                    type: integer
+                    format: int32
+                  deliveryInfos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/deliveryInfo'
         '400':
           description: 'Bad Request'
           content:
@@ -382,14 +367,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/deliveryInfo'
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+                phone:
+                  type: string
       responses:
         '201':
           description: 'Created'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/delivery' 
+                $ref: '#/components/schemas/deliveryInfo' 
         '400':
           description: 'Bad Request'
           content:
@@ -408,7 +399,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'     
-  /delivery/{deliveryId}:
+  /{userId}/delivery_infos/{deliveryId}:
     put:
       summary: '修改用户收货信息'
       operationId: put-delivery-deliveryId
@@ -433,14 +424,20 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/deliveryInfo'
+              properties:
+                name:
+                  type: string
+                address:
+                  type: string
+                phone:
+                  type: string
       responses:
         '200':
           description: 'OK'
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/delivery' 
+                $ref: '#/components/schemas/deliveryInfo' 
         '400':
           description: 'Bad Request'
           content:
@@ -482,10 +479,6 @@ paths:
       responses:
         '200':
           description: 'OK'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/delivery' 
         '400':
           description: Bad Request'
           content:
@@ -550,40 +543,43 @@ components:
               format: int32
             email:
               type: string
+              format: email
     user:
       type: object
       required:
         - email
         - nickname
-        - icon
+        - avatar
       properties:
         email:
           type: string
         nickname:
           type: string
-        icon:
+        avatar:
           type: string
+        is_admin:
+          type: boolean
+          default: false
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
     deliveryInfo:
       type: object
       required:
+        - id
         - name
         - phone
         - address
       properties:
+        id:
+          type: integer
+          format:  int32
         name:
           type: string
         phone:
           type: string
         address:
           type: string
-    delivery:
-      type: object
-      required:
-        - deliveryId
-        - deliveryInfo
-      properties:
-        deliveryId:
-          type: integer
-          format: int32
-        deliveryInfo:
-          $ref: '#/components/schemas/deliveryInfo'
