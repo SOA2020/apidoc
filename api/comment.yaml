@@ -202,6 +202,9 @@ components:
         id:
           type: integer
           format: int32
+        itemId:
+          type: integer
+          format: int32
         userId:
           type: integer
           format: int32
