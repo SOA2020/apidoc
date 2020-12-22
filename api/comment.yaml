@@ -195,8 +195,8 @@ components:
         - userId
         - userNickname
         - userAvatar
-        - created_at
-        - updated_at
+        - createdAt
+        - updatedAt
         - content
       properties:
         id:
@@ -209,10 +209,10 @@ components:
           type: string
         userNickname:
           type: string
-        created_at:
+        createdAt:
           type: string
           format: date-time
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
         content:

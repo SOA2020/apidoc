@@ -557,13 +557,13 @@ components:
           type: string
         avatar:
           type: string
-        is_admin:
+        isAdmin:
           type: boolean
           default: false
-        created_at:
+        createdAt:
           type: string
           format: date-time
-        updated_at:
+        updatedAt:
           type: string
           format: date-time
     deliveryInfo:
