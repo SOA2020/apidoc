@@ -4,9 +4,9 @@ info:
   title: comment
   description: 评论 API
 servers:
-  - url: 'http://localhost:8080/api/item'
+  - url: 'http://localhost:8080/api/commodity'
 paths:
-  /{itemId}/comments:
+  /{commodityId}/comments:
     get:
       summary: '获取某个商品的评论列表'
       operationId: get-comment-commodityId
@@ -25,7 +25,7 @@ paths:
           schema:
             type: integer
             format: int32
-        - name: itemId
+        - name: commodityId
           in: path
           required: true
           schema:
@@ -49,7 +49,7 @@ paths:
                     format: int32
                   comments:
                     title: array
-                    items:
+                    commoditys:
                       $ref: '#/components/schemas/comment'
         '400':
           description: 'Bad Request'
@@ -75,7 +75,7 @@ paths:
       tags:
         - comment
       parameters:
-        - name: itemId
+        - name: commodityId
           in: path
           required: true
           schema:
@@ -117,14 +117,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'              
-  /{itemId}/comments/{commentId}:
+  /{commodityId}/comments/{commentId}:
     delete:
       summary: '删除某一条评论'
       operationId: delete-comment-commentId
       tags:
         - comment
       parameters:
-        - name: itemId
+        - name: commodityId
           in: path
           required: true
           schema:
@@ -202,7 +202,7 @@ components:
         id:
           type: integer
           format: int32
-        itemId:
+        commodityId:
           type: integer
           format: int32
         userId:

@@ -38,10 +38,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'  
-  /tokencoin:
+  /tokenCoin:
     get:
       summary: '获取用户的代币数'
-      operationId: get-tokencoin-userId
+      operationId: get-tokenCoin-userId
       tags:
         - coin
       parameters:
@@ -60,7 +60,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  count:
+                  userId:
+                    type: integer
+                    format: int32
+                  tokenCoin:
                     type: integer
                     format: int32
         '400':
@@ -83,24 +86,20 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       summary: '修改用户的代币数'
-      operationId: put-tokencoin-userId
+      operationId: put-tokenCoin-userId
       tags:
         - coin
-      parameters:
-        - name: userId
-          in: query
-          description: 需要修改的用户 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-        - name: count
-          in: query
-          description: 修改的代币数量
-          required: true
-          schema:
-            type: integer
-            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: integer
+                  format: int32
+                tokenCoin:
+                  type: integer
+                  format: int32
       responses:
         '200':
           description: 'OK'
@@ -109,7 +108,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  count:
+                  userId:
+                    type: integer
+                    format: int32
+                  tokenCoin:
                     type: integer
                     format: int32
         '400':
@@ -181,7 +183,7 @@ components:
               commodityId:
                 type: integer
                 format: int32
-              count:
+              tokenCoin:
                 type: integer
                 format: int32
 
