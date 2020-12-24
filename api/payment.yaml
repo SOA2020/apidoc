@@ -37,7 +37,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Error'  
+                $ref: '#/components/schemas/Error'
   /tokenCoin:
     get:
       summary: '获取用户的代币数'
@@ -181,6 +181,9 @@ components:
             type: object
             properties:
               commodityId:
+                type: integer
+                format: int32
+              count:
                 type: integer
                 format: int32
               tokenCoin:
