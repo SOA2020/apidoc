@@ -33,9 +33,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/commodity'
+                type: object
+                properties:
+                  commodities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/commodity'
+                  count:
+                    type: integer
+                    format: int32
+                  pgNum:
+                    type: integer
+                    format: int32
+                  pgSize:
+                    type: integer
+                    format: int32
         '400':
           description: 'Bad Request'
           content:
@@ -89,50 +101,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-  /commodity/count:
-     get:
-      summary: '获取某一类别的商品总数'
-      operationId: get-commodity-count
-      tags:
-        - commodity
-      parameters:
-        - name: type
-          in: query
-          description: 查询的商品类型
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    format: int32
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
   /commodity/search:
     post:
       summary: '搜索商品'
@@ -160,49 +128,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/commodity'
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /commodity/search/count:
-    post:
-      summary: '获取符合关键词的商品总数'
-      operationId: post-commodity-search-count
-      tags:
-        - search
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                type: string
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
                 type: object
                 properties:
+                  commodities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/commodity'
                   count:
+                    type: integer
+                    format: int32
+                  pgNum:
+                    type: integer
+                    format: int32
+                  pgSize:
                     type: integer
                     format: int32
         '400':

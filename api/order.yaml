@@ -39,50 +39,19 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/order'
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  /order/count:
-    get:
-      summary: '获取订单总数'
-      operationId: get-order-count-userId
-      tags:
-        - order
-      parameters:
-        - name: userId
-          in: query
-          description: 当前用户 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
                 type: object
                 properties:
+                  commodities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/order'
                   count:
+                    type: integer
+                    format: int32
+                  pgNum:
+                    type: integer
+                    format: int32
+                  pgSize:
                     type: integer
                     format: int32
         '400':

@@ -33,9 +33,21 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/commodity'
+                type: object
+                properties:
+                  commodities:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/commodity'
+                  count:
+                    type: integer
+                    format: int32
+                  pgNum:
+                    type: integer
+                    format: int32
+                  pgSize:
+                    type: integer
+                    format: int32
         '400':
           description: 'Bad Request'
           content:
@@ -137,49 +149,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'  
-  /commodity/count:
-    get:
-      summary: '获取用户购物车商品总数'
-      operationId: get-cart-count-userid
-      tags:
-        - cart
-      parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: 'OK'
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    format: int32
-        '400':
-          description: 'Bad Request'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/badRequest'
-        '404':
-          description: 'Not Found'
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/notFound'
-        default:
-          description: Unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'   
 components:
   schemas:
     badRequest:
