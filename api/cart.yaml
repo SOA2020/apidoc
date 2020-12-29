@@ -83,6 +83,9 @@ paths:
                 commodityId:
                   type: integer
                   format: int32
+                num:
+                  type: integer
+                  format: int32
       responses:
         '201':
           description: 'Created'
@@ -148,6 +151,60 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: '修改购物车中的一个商品的数量'
+      operationId: delete-cart-commodityId
+      tags:
+        - cart
+      parameters:
+        - name: userId
+          in: query
+          description: 当前用户的 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+        - name: commodityId
+          in: query
+          description: 要删除的商品 ID
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                num:
+                  type: integer
+                  format: int32
+      responses:
+        '200':
+          description: 'OK'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/commodity' 
+        '400':
+          description: 'Bad Request'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/badRequest'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/notFound'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
                 $ref: '#/components/schemas/Error'  
 components:
   schemas:
@@ -190,6 +247,7 @@ components:
         - commoditySpecefication
         - commodityInvertory
         - commodityType
+        - num
       properties:
         commodityId:
           type: integer
@@ -209,5 +267,8 @@ components:
           type: integer
           format: int32
         commodityType:
+          type: integer
+          format: int32
+        num:
           type: integer
           format: int32

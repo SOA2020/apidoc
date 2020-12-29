@@ -4,7 +4,7 @@ info:
   title: inventory
   description: 库存 API
 servers:
-  - url: 'http://localhost:8080/api/inventory'
+  - url: 'http://localhost:9003/api/inventory'
 paths:
   /commodity:
     get:
@@ -181,9 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/commodityDetail'
+                $ref: '#/components/schemas/commodityDetail'
         '400':
           description: 'Bad Request'
           content:
@@ -327,13 +325,34 @@ components:
       type: object
       required:
         - commodityId
-        - commodityInfo
+        - commodityName
+        - commodityPrice
+        - commodityColor
+        - commodityImage
+        - commoditySpecification
+        - commodityInventory
+        - commodityType
       properties:
         commodityId:
           type: integer
           format: int32
-        commodityInfo:
-          $ref: '#/components/schemas/commodityInfo'
+        commodityName:
+          type: string
+        commodityPrice:
+          type: integer
+          format: int32
+        commodityColor:
+          type: string
+        commodityImage:
+          type: string
+        commoditySpecification:
+          type: string
+        commodityInventory:
+          type: integer
+          format: int32
+        commodityType:
+          type: integer
+          format: int32
     commodityInfo:
       type: object
       required:
@@ -341,8 +360,8 @@ components:
         - commodityPrice
         - commodityColor
         - commodityImage
-        - commoditySpecefication
-        - commodityInvertory
+        - commoditySpecification
+        - commodityInventory
         - commodityType
       properties:
         commodityName:
@@ -354,9 +373,9 @@ components:
           type: string
         commodityImage:
           type: string
-        commoditySpecefication:
+        commoditySpecification:
           type: string
-        commodityInvertory:
+        commodityInventory:
           type: integer
           format: int32
         commodityType:
@@ -365,20 +384,66 @@ components:
     commodityDetail:
       type: object
       required:
-        - commodity
+        - commodityId
+        - commodityName
+        - commodityPrice
+        - commodityColor
+        - commodityImage
+        - commoditySpecification
+        - commodityInventory
+        - commodityType
         - introduction
       properties:
-        commodity:
-          $ref: '#/components/schemas/commodity'
+        commodityId:
+          type: integer
+          format: int32
+        commodityName:
+          type: string
+        commodityPrice:
+          type: integer
+          format: int32
+        commodityColor:
+          type: string
+        commodityImage:
+          type: string
+        commoditySpecification:
+          type: string
+        commodityInventory:
+          type: integer
+          format: int32
+        commodityType:
+          type: integer
+          format: int32
         introduction:
           type: string
     postCommodity:
       type: object
       required:
-        - commodityInfo
+        - commodityName
+        - commodityPrice
+        - commodityColor
+        - commodityImage
+        - commoditySpecification
+        - commodityInventory
+        - commodityType
         - introduction
       properties:
-        commodityInfo:
-          $ref: '#/components/schemas/commodityInfo'
+        commodityName:
+          type: string
+        commodityPrice:
+          type: integer
+          format: int32
+        commodityColor:
+          type: string
+        commodityImage:
+          type: string
+        commoditySpecification:
+          type: string
+        commodityInventory:
+          type: integer
+          format: int32
+        commodityType:
+          type: integer
+          format: int32
         introduction:
           type: string

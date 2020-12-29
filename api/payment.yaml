@@ -189,5 +189,3 @@ components:
               tokenCoin:
                 type: integer
                 format: int32
-
-              
