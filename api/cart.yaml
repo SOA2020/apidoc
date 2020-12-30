@@ -132,7 +132,7 @@ paths:
             type: integer
             format: int32
       responses:
-        '200':
+        '204':
           description: 'OK'
         '400':
           description: 'Bad Request'
