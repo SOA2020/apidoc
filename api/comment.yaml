@@ -124,6 +124,9 @@ paths:
       tags:
         - comment
       parameters:
+        - name: userId
+          in: query
+          required: true
         - name: commodityId
           in: path
           required: true
