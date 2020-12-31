@@ -196,8 +196,6 @@ components:
       required:
         - id
         - userId
-        - userNickname
-        - userAvatar
         - createdAt
         - updatedAt
         - content
@@ -211,10 +209,6 @@ components:
         userId:
           type: integer
           format: int32
-        userAvatar:
-          type: string
-        userNickname:
-          type: string
         createdAt:
           type: string
           format: date-time
