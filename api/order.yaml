@@ -79,13 +79,6 @@ paths:
       tags:
         - order
       parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
         - name: orderId
           in: path
           description: 更改的订单的 ID
@@ -99,6 +92,9 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
+                  format: int32
                 status:
                   type: boolean
       responses:
@@ -129,13 +125,6 @@ paths:
       tags:
         - order
       parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
         - name: orderId
           in: path
           description: 更改的订单的 ID
@@ -149,6 +138,9 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
+                  format: int32
                 status:
                   type: boolean
       responses:
