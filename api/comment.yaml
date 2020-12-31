@@ -48,8 +48,8 @@ paths:
                     type: integer
                     format: int32
                   comments:
-                    title: array
-                    commoditys:
+                    type: array
+                    items:
                       $ref: '#/components/schemas/comment'
         '400':
           description: 'Bad Request'
