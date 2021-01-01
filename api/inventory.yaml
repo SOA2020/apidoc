@@ -107,21 +107,16 @@ paths:
       operationId: post-commodity-search
       tags:
         - search
-      parameters:
-        - name: pageNumber
-          in: query
-          description: 查询的页码
-          required: true
-          schema:
-            type: integer
-            format: int32
       requestBody:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: string
+              type: object
+              properties:
+                keyWords:
+                  type: array
+                  items:
+                    type: string
       responses:
         '200':
           description: 'OK'
@@ -134,15 +129,6 @@ paths:
                     type: array
                     items:
                       $ref: '#/components/schemas/commodity'
-                  count:
-                    type: integer
-                    format: int32
-                  pgNum:
-                    type: integer
-                    format: int32
-                  pgSize:
-                    type: integer
-                    format: int32
         '400':
           description: 'Bad Request'
           content:
