@@ -6,7 +6,7 @@ info:
 servers:
   - url: 'http://localhost:8080/api/order'
 paths:
-  /order:
+  /:
     get:
       summary: '获取订单列表'
       operationId: get-order-userId
@@ -41,7 +41,7 @@ paths:
               schema:
                 type: object
                 properties:
-                  commodities:
+                  orders:
                     type: array
                     items:
                       $ref: '#/components/schemas/order'
@@ -72,20 +72,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /order/receivestatus/{orderId}:
+  /{orderId}/receivestatus:
     put:
       summary: '修改用户的收货状态'
       operationId: put-receivestatus-userId-orderId
       tags:
         - order
       parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
         - name: orderId
           in: path
           description: 更改的订单的 ID
@@ -99,6 +92,9 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
+                  format: int32
                 status:
                   type: boolean
       responses:
@@ -122,20 +118,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /order/sendstatus/{orderId}:
+  /{orderId}/sendstatus:
      put:
       summary: '修改用户的发货状态'
       operationId: put-sendstatus-userId-orderId
       tags:
         - order
       parameters:
-        - name: userId
-          in: query
-          description: 当前用户的 ID
-          required: true
-          schema:
-            type: integer
-            format: int32
         - name: orderId
           in: path
           description: 更改的订单的 ID
@@ -149,6 +138,9 @@ paths:
             schema:
               type: object
               properties:
+                userId:
+                  type: integer
+                  format: int32
                 status:
                   type: boolean
       responses:

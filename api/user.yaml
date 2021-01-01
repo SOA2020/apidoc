@@ -284,7 +284,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /{userId}/delivery_infos:
+  /{userId}/deliveryInfos:
     get:
       summary: '获取用户收货信息'
       operationId: get-user-delivery-userid
@@ -399,7 +399,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'     
-  /{userId}/delivery_infos/{deliveryId}:
+  /{userId}/deliveryInfos/{deliveryId}:
     put:
       summary: '修改用户收货信息'
       operationId: put-delivery-deliveryId

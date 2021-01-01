@@ -48,8 +48,8 @@ paths:
                     type: integer
                     format: int32
                   comments:
-                    title: array
-                    commoditys:
+                    type: array
+                    items:
                       $ref: '#/components/schemas/comment'
         '400':
           description: 'Bad Request'
@@ -124,6 +124,9 @@ paths:
       tags:
         - comment
       parameters:
+        - name: userId
+          in: query
+          required: true
         - name: commodityId
           in: path
           required: true
@@ -193,8 +196,6 @@ components:
       required:
         - id
         - userId
-        - userNickname
-        - userAvatar
         - createdAt
         - updatedAt
         - content
@@ -208,10 +209,6 @@ components:
         userId:
           type: integer
           format: int32
-        userAvatar:
-          type: string
-        userNickname:
-          type: string
         createdAt:
           type: string
           format: date-time
