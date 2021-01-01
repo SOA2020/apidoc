@@ -167,7 +167,7 @@ components:
       required:
         - userId
         - deliveryId
-        - commodity
+        - commodities
       properties:
         userId:
           type: integer
@@ -175,7 +175,7 @@ components:
         deliveryId:
           type: integer
           format: int32
-        commodity:
+        commodities:
           type: array
           items:
             type: object
@@ -184,8 +184,5 @@ components:
                 type: integer
                 format: int32
               count:
-                type: integer
-                format: int32
-              tokenCoin:
                 type: integer
                 format: int32
